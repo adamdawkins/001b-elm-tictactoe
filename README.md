@@ -4,7 +4,7 @@ The idea is to increment in as small a set of changes as possible.
 # v1
 [x] Render a naughts and crosses board
 [x] clicking fills a square
-[] alternate clicks alterate between O and X
+[x] alternate clicks alterate between O and X
 [] Cannot change an existing square
 [] Declare winner
 [] Declare stalemate

@@ -29,6 +29,11 @@ fillSquare : Int -> Model -> Board
 fillSquare index model =
   set index (Just model.nextTurn) model.board
 
+setNextTurn : Symbol -> Symbol
+setNextTurn currentTurn =
+  case currentTurn of
+    X -> O
+    O -> X
 
 
 type Msg = PlaySquare Int
@@ -40,7 +45,7 @@ update msg model =
     PlaySquare idx ->
       { model
       | board = fillSquare idx model
-      , nextTurn = O
+      , nextTurn = setNextTurn model.nextTurn
       }
 
 
