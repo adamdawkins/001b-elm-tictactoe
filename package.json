@@ -1,0 +1,12 @@
+{
+  "name": "elm-tictactoe",
+  "version": "0.3.0",
+  "description": "Tic Tac Toe in Elm",
+  "main": "index.js",
+  "scripts": {
+    "start": "elm-reactor"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
