@@ -15,25 +15,55 @@ type alias Board = Array (Square)
 type alias Model =
   { board : Board
   , nextTurn: Symbol
+  , message: String
   }
 
 model = 
   { board = initialize 9 (always Nothing)
   , nextTurn = O
+  , message = ""
   }
 
 -- UPDATE
+clearMessage : Model -> Model
+clearMessage model =
+  { model
+  | message = ""
+  }
+
+setMessage : String -> Model -> Model
+setMessage message model =
+  { model
+  | message = message
+  }
+
 
 -- fill the square at index with the right Symbol and return the new Board
-fillSquare : Int -> Model -> Board
+fillSquare : Int -> Model -> Model
 fillSquare index model =
-  set index (Just model.nextTurn) model.board
+  case get index model.board of
+    -- empty cell
+    Just Nothing -> 
+      clearMessage
+        { model
+        | board = set index (Just model.nextTurn) model.board
+        }
+        |> setNextTurn
+    -- filled cell
+    Just _ -> 
+      setMessage "You can't go there" model
+    -- index out of range
+    Nothing ->
+      setMessage "Something went seriously wrong!" model
+  
 
-setNextTurn : Symbol -> Symbol
-setNextTurn currentTurn =
-  case currentTurn of
-    X -> O
-    O -> X
+setNextTurn : Model -> Model
+setNextTurn model =
+  { model
+  | nextTurn = case model.nextTurn of
+      X -> O
+      O -> X
+  }
 
 
 type Msg = PlaySquare Int
@@ -43,10 +73,7 @@ update : Msg -> Model -> Model
 update msg model =
   case msg of
     PlaySquare idx ->
-      { model
-      | board = fillSquare idx model
-      , nextTurn = setNextTurn model.nextTurn
-      }
+      fillSquare idx model
 
 
 -- VIEW
@@ -58,7 +85,10 @@ view model =
         , toList (slice 6 9 model.board)
         ]
   in
-    table [] [ tbody [] (List.indexedMap viewRow rows) ]
+    div []
+    [ h1 [] [ text model.message ]
+    , table [] [ tbody [] (List.indexedMap viewRow rows) ]
+    ]
 
 tdStyle =
     style
