@@ -14,13 +14,13 @@ type alias Board = Array (Square)
 
 type alias Model =
   { board : Board
-  , nextTurn: Symbol
+  , activePlayer: Symbol
   , message: String
   }
 
 model = 
   { board = initialize 9 (always Nothing)
-  , nextTurn = O
+  , activePlayer = O
   , message = ""
   }
 
@@ -42,25 +42,28 @@ setMessage message model =
 fillSquare : Int -> Model -> Model
 fillSquare index model =
   case get index model.board of
+
     -- empty cell
     Just Nothing -> 
       clearMessage
         { model
-        | board = set index (Just model.nextTurn) model.board
+        | board = set index (Just model.activePlayer) model.board
         }
-        |> setNextTurn
+        |> switchPlayer
+
     -- filled cell
     Just _ -> 
       setMessage "You can't go there" model
+
     -- index out of range
     Nothing ->
       setMessage "Something went seriously wrong!" model
   
 
-setNextTurn : Model -> Model
-setNextTurn model =
+switchPlayer : Model -> Model
+switchPlayer model =
   { model
-  | nextTurn = case model.nextTurn of
+  | activePlayer = case model.activePlayer of
       X -> O
       O -> X
   }
