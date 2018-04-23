@@ -1,3 +1,8 @@
+## [Version v0.5.0](https://github.com/adamdawkins/001b-elm-tictactoe/releases/tag/vv0.5.0) (2018-4-23)
+
+### Bug fixes
+
+- Declare a winner: [`fa6f6e7`](https://github.com/adamdawkins/001b-elm-tictactoe/commit/fa6f6e7)
 ## [Version 0.0.1](https://github.com/adamdawkins/001b-elm-tictactoe/releases/tag/v0.0.1) (2018-4-21)
 
 ### New features
