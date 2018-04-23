@@ -2,6 +2,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Array exposing (..)
+import Maybe.Extra exposing (values)
 
 
 main =
@@ -26,10 +27,7 @@ model =
 
 -- UPDATE
 clearMessage : Model -> Model
-clearMessage model =
-  { model
-  | message = ""
-  }
+clearMessage = setMessage ""
 
 setMessage : String -> Model -> Model
 setMessage message model =
@@ -71,13 +69,55 @@ switchPlayer model =
 
 type Msg = PlaySquare Int
 
+getSquares : List Int -> Board -> List Square
+getSquares squares board = 
+  Maybe.Extra.values <| List.map (\s -> Array.get s board) squares
+
+full : List Square -> Bool
+full squares = 
+  case Maybe.Extra.values squares of 
+    [a, b, c] ->
+       a == b && b == c
+    _ ->
+      False
+
+
+checkStatus : Model -> Model
+checkStatus model =
+  let
+    rows =  [ toList (slice 0 3 model.board)
+            , toList (slice 3 6 model.board)
+            , toList (slice 6 9 model.board)
+            ]
+    columns =
+      [ getSquares [0, 3, 6] model.board
+      , getSquares [1, 4, 7] model.board
+      , getSquares [2, 5, 8] model.board
+      ]
+    diagonals =
+      [ getSquares [0, 4, 8] model.board
+      , getSquares [2, 4, 6] model.board
+      ]
+
+    possibleWinner =
+      -- We switch the active player when we fill the square
+      -- so we need to switch it back for the winner
+      case model.activePlayer of
+        X -> O
+        O -> X
+       
+  in
+    if List.any full <| rows ++ columns ++ diagonals then
+      setMessage ((toString possibleWinner) ++ " wins!") model
+    else
+      model
 
 update : Msg -> Model -> Model
 update msg model =
   case msg of
     PlaySquare idx ->
       fillSquare idx model
-
+        |> checkStatus
 
 -- VIEW
 view : Model -> Html Msg
