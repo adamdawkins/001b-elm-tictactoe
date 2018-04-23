@@ -7,7 +7,7 @@ The idea is to increment in as small a set of changes as possible.
 [x] alternate clicks alterate between O and X
 [x] Cannot change an existing square
 [x] Declare winner
-[] Declare stalemate
+[x] Declare stalemate
 
 # v2
 [] AI clicks squares for Xs go.

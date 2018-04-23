@@ -26,6 +26,11 @@ model =
   }
 
 -- UPDATE
+
+numberOfPossibleMoves : Board -> Int
+numberOfPossibleMoves board =
+  List.length <| List.filter ((==) Nothing) (toList board)
+
 clearMessage : Model -> Model
 clearMessage = setMessage ""
 
@@ -107,8 +112,12 @@ checkStatus model =
         O -> X
        
   in
+    -- check for a win
     if List.any full <| rows ++ columns ++ diagonals then
       setMessage ((toString possibleWinner) ++ " wins!") model
+    -- check for a draw
+    else if (numberOfPossibleMoves model.board) == 0 then
+      setMessage "It's a draw!" model
     else
       model
 
