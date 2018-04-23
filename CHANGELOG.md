@@ -1,3 +1,8 @@
+## [Version 1.0.0](https://github.com/adamdawkins/001b-elm-tictactoe/releases/tag/v1.0.0) (2018-4-23)
+
+### Breaking changes
+
+- Declare a stalemate: [`8a2cf5a`](https://github.com/adamdawkins/001b-elm-tictactoe/commit/8a2cf5a)
 ## [Version v0.5.0](https://github.com/adamdawkins/001b-elm-tictactoe/releases/tag/vv0.5.0) (2018-4-23)
 
 ### Bug fixes
