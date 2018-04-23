@@ -25,12 +25,25 @@ model =
   , message = ""
   }
 
--- UPDATE
+
+-- helpers
+getSquares : List Int -> Board -> List Square getSquares squares board = 
+  Maybe.Extra.values <| List.map (\s -> Array.get s board) squares
+
+full : List Square -> Bool
+full squares = 
+  case Maybe.Extra.values squares of 
+    [a, b, c] ->
+       a == b && b == c
+    _ ->
+      False
 
 numberOfPossibleMoves : Board -> Int
 numberOfPossibleMoves board =
   List.length <| List.filter ((==) Nothing) (toList board)
 
+
+-- UPDATE
 clearMessage : Model -> Model
 clearMessage = setMessage ""
 
@@ -71,22 +84,10 @@ switchPlayer model =
       O -> X
   }
 
-
+-- Actions
 type Msg = PlaySquare Int
 
-getSquares : List Int -> Board -> List Square
-getSquares squares board = 
-  Maybe.Extra.values <| List.map (\s -> Array.get s board) squares
-
-full : List Square -> Bool
-full squares = 
-  case Maybe.Extra.values squares of 
-    [a, b, c] ->
-       a == b && b == c
-    _ ->
-      False
-
-
+-- checks the game status for wins or draws
 checkStatus : Model -> Model
 checkStatus model =
   let
